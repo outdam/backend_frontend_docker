@@ -1,0 +1,42 @@
+version: '2'
+services:
+
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    command: bundle exec rackup -p 8080 --host 0.0.0.0
+    ports:
+      - '8080:8080'
+    volumes:
+     - ./frontend:/app
+    environment:
+      - RACK_ENV=production
+      - BACKEND_URL=backend:8888
+    depends_on:
+      - backend
+
+
+  backend:
+    build: ./backend
+    container_name: backend
+    command: bundle exec rackup -p 8888 --host 0.0.0.0
+    ports:
+      - '8888:8888'
+    # depends_on:
+    #   - db
+    # volumes:
+    #   - ./backend:/app
+    #   - bundle:/usr/local/bundle
+    #   - db_data:/var/lib/postgresql/data
+    # environment:
+    #   RAILS_ENV: development
+
+  # db:
+    # image: postgres:9.6
+    # container_name: yourappname_db
+    # ports:
+    #   - '5432'
+
+# volumes:
+#   db_data:
+#   bundle:
